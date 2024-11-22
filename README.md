@@ -35,8 +35,7 @@ A full-stack personal blog application built with **Vue 3** for the frontend and
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/<your-repository>.git
-   cd <your-repository>/backend
+   git clone https://github.com/<your-username>/<your-repository>.git](https://github.com/JunwenGan/junwen-blog.git
 2. Create a virtual environment and activate it:
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
