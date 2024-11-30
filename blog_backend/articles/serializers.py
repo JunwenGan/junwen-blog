@@ -4,9 +4,19 @@ from django.contrib.auth.models import User
 
 # Serializer for comments
 class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)  # Read-only field for username
+
     class Meta:
-        model = Comment  # Specify the Comment model
-        fields = '__all__'  # Serialize all fields in the Comment model
+        model = Comment
+        fields = ['id', 'content', 'article', 'user', 'created_at']
+
+    def get_user(self, obj):
+        return obj.user.username  # Return the username of the user
+
+    def create(self, validated_data):
+        request = self.context.get('request')  # Get the request object from the context
+        user = request.user  # Get the currently authenticated user
+        return Comment.objects.create(user=user, **validated_data)  # Associate comment with user
 
 # Serializer for articles
 class ArticleSerializer(serializers.ModelSerializer):

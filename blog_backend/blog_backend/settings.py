@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'blog_backend.urls'
@@ -122,6 +125,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# For production, where static files are collected into a single directory
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional static files directories (optional, for development)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -130,13 +141,23 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ),
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
 }
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,  
+    'PAGE_SIZE': 1,  
 }
+
+# SIMPLE_JWT = {
+#     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+#     'AUTH_HEADER_TYPES':('Bearer'),
+# }
 
 # Allow all origins (for development purposes only)
 CORS_ALLOW_ALL_ORIGINS = True
@@ -146,3 +167,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',  # Frontend (Vite dev server)
     'http://localhost:5173',  # Frontend alternative
 ]
+
+import os
+
+MEDIA_URL = '/media/'  # URL for accessing uploaded media files
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Directory for storing uploaded media files

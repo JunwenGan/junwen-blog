@@ -1,4 +1,4 @@
-from rest_framework import generics  # Import generic API views from REST Framework
+from rest_framework import generics, permissions
 from .models import Article, Comment  # Import models
 from .serializers import ArticleSerializer, CommentSerializer  # Import serializers
 from rest_framework.permissions import IsAuthenticated
@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import UserRegisterSerializer
+from rest_framework.permissions import AllowAny, IsAdminUser
+
 # List and create articles
 class ArticleListCreateView(generics.ListCreateAPIView):
     queryset = Article.objects.all()  # Fetch all articles from the database
@@ -21,6 +23,22 @@ class ArticleRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
 class CommentListCreateView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()  # Fetch all comments from the database
     serializer_class = CommentSerializer  # Use the Comment serializer
+    permission_classes = [IsAuthenticated]
+    
+    # def get_queryset(self):
+    #     return super().get_queryset()
+    # def get_permissions(self):
+
+    #     self.permission_classes = [AllowAny]
+    #     if self.request.method == 'POST':
+    #         self.permission_classes = [IsAuthenticated]
+    #     return super().get_permissions()
+
+
+    def get_serializer_context(self):
+
+        # Provide the request to the serializer context
+        return {'request': self.request}
 
 # User Registration API
 class UserRegisterView(APIView):

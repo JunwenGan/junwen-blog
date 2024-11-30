@@ -1,20 +1,22 @@
 <template>
     <div>
-      <h1>Blog Articles</h1>
-      <ul>
-        <li v-for="article in articles" :key="article.id">
-          <router-link :to="`/article/${article.id}`">
-            {{ article.title }}
-          </router-link>
-        </li>
-      </ul>
+      <Navbar></Navbar>
+      <!-- <h1 class="text-2xl font-bold">Blog Articles</h1>
+      <p class="mt-2">This is a sample application using Vue 3 and TailwindCSS.</p> -->
+      <ArticleIndex></ArticleIndex>
     </div>
   </template>
   
+  
   <script>
   import axios from 'axios';
-  
+  import ArticleIndex from './Blog/ArticleIndex.vue';
+  import Navbar from '../components/Layout/Navbar.vue';
   export default {
+    components: {
+      Navbar, 
+      ArticleIndex
+  },
     data() {
       return {
         articles: [], // Store articles

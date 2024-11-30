@@ -13,3 +13,8 @@ urlpatterns = [
     path('comments/', CommentListCreateView.as_view(), name='comment-list-create'),  # API for listing and creating comments
     path('register/', UserRegisterView.as_view(), name='user-register'),
 ]
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:  
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
